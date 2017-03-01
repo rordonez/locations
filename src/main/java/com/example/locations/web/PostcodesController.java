@@ -1,5 +1,6 @@
 package com.example.locations.web;
 
+import com.example.locations.web.api.PostcodeApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-
 /**
  * Created by rafa on 01/03/2017.
  */
@@ -17,8 +16,14 @@ import java.util.ArrayList;
 @RequestMapping(value = "/postcodes", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PostcodesController {
 
+    private PostcodeApi postcodeApi;
+
+    public PostcodesController(PostcodeApi postcodeApi) {
+        this.postcodeApi = postcodeApi;
+    }
+
     @GetMapping(value = "/{postcode}")
     public ResponseEntity<PostcodeResponse> getPostcodeBy(@PathVariable String postcode) {
-        return new ResponseEntity<>(new PostcodeResponse(new ArrayList<>()), HttpStatus.OK);
+        return new ResponseEntity<>(new PostcodeResponse(postcodeApi.getAddressListBy(postcode)), HttpStatus.OK);
     }
 }
