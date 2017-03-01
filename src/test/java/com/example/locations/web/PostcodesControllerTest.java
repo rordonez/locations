@@ -10,8 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by rafa on 01/03/2017.
@@ -41,5 +40,16 @@ public class PostcodesControllerTest {
 
         response.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void getPostcodeShouldReturnAListOfAddresses() throws Exception {
+        String aPostcode = "SOME";
+
+        ResultActions response = this.mvc.perform(get("/postcodes/{postcode}", aPostcode)
+                .accept(MediaType.APPLICATION_JSON_UTF8));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.addressList").exists());
     }
 }
