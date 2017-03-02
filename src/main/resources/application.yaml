@@ -1,0 +1,3 @@
+ideal.postcode.api :
+  url : https://api.ideal-postcodes.co.uk/v1
+  key : iddqd
