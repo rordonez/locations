@@ -52,10 +52,11 @@ task integrationTest(type: Test) {
 	testLogging.events "passed", "skipped", "failed", "standardError"
 }
 
-check.dependsOn integrationTest
-integrationTest.mustRunAfter test
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test

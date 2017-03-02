@@ -39,7 +39,7 @@ public class IdealPostcodesApi implements PostcodeApi {
     public List<Address> getAddressListBy(String postcode) {
         ResponseEntity<Result> response = client.getForEntity(createURIForPostcodesUsing(postcode), Result.class);
 
-        return response.getBody().getPostcodeList()
+        return response.getBody().getResult()
                 .stream()
                 .map(postcodeToAddress)
                 .collect(Collectors.toList());

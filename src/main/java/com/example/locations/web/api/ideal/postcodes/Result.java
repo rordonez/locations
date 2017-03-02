@@ -7,18 +7,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Result {
-    private final List<Postcode> postcodeList;
+
+    private final List<Postcode> result;
 
     public Result() {
-        this.postcodeList = new ArrayList<>();
+        this.result = new ArrayList<>();
     }
 
     @JsonCreator
-    public Result(@JsonProperty("postcodeList") List<Postcode> postcodeList) {
-        this.postcodeList = postcodeList;
+    public Result(@JsonProperty("result") List<Postcode> result) {
+        this.result = result;
     }
 
-    public List<Postcode> getPostcodeList() {
-        return postcodeList;
+    public List<Postcode> getResult() {
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Result result1 = (Result) o;
+
+        return result != null ? result.equals(result1.result) : result1.result == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return result != null ? result.hashCode() : 0;
     }
 }
