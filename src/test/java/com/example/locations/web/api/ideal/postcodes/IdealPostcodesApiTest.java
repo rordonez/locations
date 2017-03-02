@@ -1,5 +1,7 @@
 package com.example.locations.web.api.ideal.postcodes;
 
+import com.example.locations.web.Address;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -12,7 +14,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.empty;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
@@ -31,10 +37,23 @@ public class IdealPostcodesApiTest {
     public void getAddressListByPostcodeShouldCallPostcodesEndpoint() throws Exception {
         URI uri = idealPostcodesApi.createURIForPostcodesUsing(POSTCODE);
         given(client.getForEntity(uri, Result.class))
-                .willReturn(new ResponseEntity<>(HttpStatus.OK));
+                .willReturn(new ResponseEntity<>(new Result(), HttpStatus.OK));
 
         idealPostcodesApi.getAddressListBy(POSTCODE);
 
         Mockito.verify(client).getForEntity(uri, Result.class);
     }
+
+    @Test
+    public void getAddressListByPostcodeWhenNoPostcodesAreFoundShouldReturnAnEmptyList() throws Exception {
+        URI uri = idealPostcodesApi.createURIForPostcodesUsing(POSTCODE);
+        given(client.getForEntity(uri, Result.class))
+                .willReturn(new ResponseEntity<>(new Result(new ArrayList<>()), HttpStatus.OK));
+
+        List<Address> addressList = idealPostcodesApi.getAddressListBy(POSTCODE);
+
+        Assert.assertThat(addressList, is(empty()));
+    }
+
+
 }
