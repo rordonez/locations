@@ -14,10 +14,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
+import static com.example.locations.web.api.ideal.postcodes.Postcode.Builder.aPostcode;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.empty;
 import static org.mockito.BDDMockito.given;
 
@@ -45,15 +46,45 @@ public class IdealPostcodesApiTest {
     }
 
     @Test
-    public void getAddressListByPostcodeWhenNoPostcodesAreFoundShouldReturnAnEmptyList() throws Exception {
+    public void getAddressListByPostcodeShouldMapResultsIntoAListOfAddresses() throws Exception {
         URI uri = idealPostcodesApi.createURIForPostcodesUsing(POSTCODE);
         given(client.getForEntity(uri, Result.class))
-                .willReturn(new ResponseEntity<>(new Result(new ArrayList<>()), HttpStatus.OK));
+                .willReturn(new ResponseEntity<>(new Result(mockListOfPostcodes()), HttpStatus.OK));
 
         List<Address> addressList = idealPostcodesApi.getAddressListBy(POSTCODE);
 
-        Assert.assertThat(addressList, is(empty()));
+        Assert.assertThat(addressList, is(not(empty())));
+        assertListOfAddresses(addressList);
     }
 
+    private void assertListOfAddresses(List<Address> addressList) {
+        Assert.assertThat(addressList.get(0).getStreet(), is("12, Lemon St, London, N1 ABC"));
+        Assert.assertThat(addressList.get(0).getBuildingName(), is("Yellow Building"));
+        Assert.assertThat(addressList.get(1).getStreet(), is("Flat 3, 123, Beatles St, London, N3 ZZZ"));
+        Assert.assertThat(addressList.get(1).getBuildingName(), nullValue());
+        Assert.assertThat(addressList.get(2).getStreet(), is("Flat 3, 32 Liverpool Rd, London, N1 ABC, Berna House"));
+        Assert.assertThat(addressList.get(2).getBuildingName(), is("Berna House"));
+    }
+
+    private List<Postcode> mockListOfPostcodes() {
+        return Arrays.asList(
+          aPostcode()
+                  .withLine1("12, Lemon St")
+                  .withLine2("London, N1 ABC")
+                  .withBuildingName("Yellow Building")
+                  .build(),
+          aPostcode()
+                  .withLine1("Flat 3")
+                  .withLine2("123, Beatles St")
+                  .withLine3("London, N3 ZZZ")
+                  .build(),
+          aPostcode()
+                  .withLine1("Flat 3, 32 Liverpool Rd")
+                  .withLine2("London, N1 ABC")
+                  .withLine3("Berna House")
+                  .withBuildingName("Berna House")
+                  .build()
+        );
+    }
 
 }
