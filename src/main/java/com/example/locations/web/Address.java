@@ -16,8 +16,7 @@ public class Address {
         this.buildingName = buildingName;
     }
 
-    @JsonCreator
-    public Address(@JsonProperty("street") String street) {
+    public Address(String street) {
         this.street = street;
         this.buildingName = null;
     }
