@@ -2,6 +2,8 @@ package com.example.locations.web.api.ideal.postcodes;
 
 import com.example.locations.web.Address;
 import com.example.locations.web.api.PostcodeApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 @Service
 public class IdealPostcodesApi implements PostcodeApi {
 
+    private static final Logger log = LoggerFactory.getLogger(IdealPostcodesApi.class);
+
     private static final String API_KEY_QUERY_PARAM = "api_key";
 
     @Value("${ideal.postcodes.api.url}")
@@ -37,6 +41,7 @@ public class IdealPostcodesApi implements PostcodeApi {
 
     @Override
     public List<Address> getAddressListBy(String postcode) {
+        log.info("Getting address list by postcode {}", postcode);
         ResponseEntity<Result> response = client.getForEntity(createURIForPostcodesUsing(postcode), Result.class);
 
         return response.getBody().getResult()

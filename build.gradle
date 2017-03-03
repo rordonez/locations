@@ -54,6 +54,8 @@ task integrationTest(type: Test) {
 
 
 dependencies {
+    compile ("org.slf4j:jcl-over-slf4j:${jclOverSlf4jVersion}")
+    compile ("ch.qos.logback:logback-classic:${logbackVersion}")
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
