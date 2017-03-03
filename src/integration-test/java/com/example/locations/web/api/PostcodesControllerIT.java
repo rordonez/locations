@@ -34,7 +34,7 @@ public class PostcodesControllerIT {
                 createURLWithPort("/postcodes/W60LG"),
                 HttpMethod.GET, entity, PostcodeResponse.class);
 
-        Assert.assertThat(response, is(HttpStatus.OK));
+        Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
         Assert.assertThat(response.getBody().getAddressList(), is(not(empty())));
     }
 
@@ -46,7 +46,7 @@ public class PostcodesControllerIT {
                 createURLWithPort("/postcodes/SW1A2AA"),
                 HttpMethod.GET, entity, PostcodeResponse.class);
 
-        Assert.assertThat(response, is(HttpStatus.OK));
+        Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
         Assert.assertThat(response.getBody().getAddressList(), is(not(empty())));
     }
 
@@ -58,7 +58,7 @@ public class PostcodesControllerIT {
                 createURLWithPort("/postcodes/BT486DQ"),
                 HttpMethod.GET, entity, PostcodeResponse.class);
 
-        Assert.assertThat(response, is(HttpStatus.OK));
+        Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
         Assert.assertThat(response.getBody().getAddressList(), is(not(empty())));
     }
 

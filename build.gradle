@@ -10,6 +10,9 @@ buildscript {
 	}
 }
 
+ext.jclOverSlf4jVersion                 = "1.7.12"
+ext.logbackVersion                      = "1.1.7"
+
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
